@@ -1,4 +1,42 @@
+import os
+import sys
 from statistics import mean
+
+
+def find_commentaries(directory):
+
+    hws = [hw for hw in os.listdir(directory) if hw.startswith('tarea') and hw.endswith('-comentarios.md')]
+
+    return hws
+
+
+def get_homework_number(hws):
+
+    numbers = [int(hw[6:8]) for hw in hws]
+
+    if len(set(numbers)) == 1:
+
+        return numbers[0]
+
+    else:
+
+        return 'Mixed homeworks'
+
+
+def get_homework_names(hws, list_path):
+
+    students_list = get_students_list(list_path)
+    names = [students_list[hw[9:-4]] for hw in hws]
+
+    return names
+
+
+def get_template(template_path):
+
+    with open(template_path, 'r') as template:
+
+        return [template.readlines()]
+
 
 def get_points(path):
 
@@ -37,4 +75,7 @@ def grade(path):
 
     return graded_hw
 
-print(''.join(grade('/home/jueves/repos/grading/Test/tarea_07-perez_osorio-comentarios.md')))
+#print(''.join(grade('/home/jueves/repos/grading/Test/tarea_07-perez_osorio-comentarios.md')))
+
+homework_directory = sys.argv[1]
+print(find_commentaries(homework_directory))
