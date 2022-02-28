@@ -1,6 +1,0 @@
----
-
-| Ejercicio | Puntuación |
-|   :---:   |    :---:   |
-
-## Comentarios
