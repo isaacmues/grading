@@ -18,8 +18,20 @@ function usage {
 }
 
 function get_name {
-    name=$(echo $1 | grep -e '-[a-z_]\+-' -o)
+    local name=$(echo $1 | grep -e '-[a-z_]\+.' -o)
     name=$(grep ${name:1:-1} $2 | cut -d , -f 2)
+    echo $name
+}
+
+function get_number {
+    local number=$(echo $1 | grep -e '_[0-9]\+-' -o)
+    echo ${number:1:-1}
+}
+
+function make_title {
+    local name=$(get_name $1 $2)
+    local number=$(get_number $1)
+    echo "Tarea $number de $name"
 }
 
 optstring="d:l:n:h"
@@ -47,6 +59,7 @@ done
 # TODO put an if to check if the non-optional options are valid
 for hw in "$hwdir"tarea*.pdf
 do
-    echo $hw
+    make_title $hw $list
 done
 
+echo $name
