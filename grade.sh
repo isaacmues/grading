@@ -43,15 +43,39 @@ makefinalpdf(){
     rm $comments_pdf
 }
 
-echo "The commentaries are in $1"
-echo "Using: $2"
+function usage {
+    echo "Grading script"
+    echo "=============="
+    echo "grade -l students_list -d homework_directory"
+}
 
-zip $1comments_backup.zip $1*comentarios.md
+optstring="d:hl:"
 
-for homework in $1*comentarios.md
-do
-    grade $homework $2 >> tmp_grade
-    mv tmp_grade $homework
-    comments2pd $homework
-    makefinalpdf $homework
+while getopts ${optstring} arg; do
+    case ${arg} in
+        h)
+            echo "Showing usage"
+            usage
+            ;;
+        l)
+            LIST=${OPTARG}
+            echo "List at $HWDIR"
+            ;;
+        d)
+            HWDIR=${OPTARG}
+            echo "Homework at $HWDIR"
+            ;;
+    esac
 done
+
+#zip $1comments_backup.zip $1*comentarios.md
+#
+#for homework in $1*comentarios.md
+#do
+#    grade $homework $2 >> tmp_grade
+#    mv tmp_grade $homework
+#    comments2pd $homework
+#    makefinalpdf $homework
+#done
+
+
