@@ -44,11 +44,31 @@ function make_table {
         echo "| $i | puntuacion_$i |"
     done
 
-    echo "| Total    | puntuacion_total |"
+    echo "| **Total** | puntuacion_total |"
 }
 
 function make_commentaries_file {
     echo $1 | sed 's/.pdf/-commentaries.md/'
+}
+
+function create_template {
+
+    echo "# $(make_title $1 $2)"
+    echo "## Calificación: xcalificacionx"
+    echo "---"
+    echo ""
+    echo "## Resumen"
+    echo ""
+    make_table $3
+    echo ""
+    echo "## Comentarios"
+    echo ""
+
+    for ((i = 1 ; i <= $n ; i++))
+    do
+        echo "$i. **(x pts)**"
+    done
+
 }
 
 optstring="d:l:n:h"
@@ -76,8 +96,7 @@ done
 # TODO put an if to check if the non-optional options are valid
 for hw in "$hwdir"tarea*.pdf
 do
-    make_title $hw $list
-    make_commentaries_file $hw
-    make_table $n
+    commentaries=$(make_commentaries_file $hw)
+    create_template $hw $list $n >> $commentaries
 done
 
