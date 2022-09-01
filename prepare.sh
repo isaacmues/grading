@@ -34,6 +34,23 @@ function make_title {
     echo "Tarea $number de $name"
 }
 
+function make_table {
+    
+    echo "| Problema | Puntuación |"
+    echo "| :------: | :--------: |"
+
+    for ((i = 1 ; i <= $n ; i++))
+    do
+        echo "| $i | puntuacion_$i |"
+    done
+
+    echo "| Total    | puntuacion_total |"
+}
+
+function make_commentaries_file {
+    echo $1 | sed 's/.pdf/-commentaries.md/'
+}
+
 optstring="d:l:n:h"
 
 while getopts ${optstring} arg; do
@@ -60,6 +77,7 @@ done
 for hw in "$hwdir"tarea*.pdf
 do
     make_title $hw $list
+    make_commentaries_file $hw
+    make_table $n
 done
 
-echo $name
