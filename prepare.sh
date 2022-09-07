@@ -54,7 +54,9 @@ function make_commentaries_file {
 function create_template {
 
     echo "# $(make_title $1 $2)"
+    echo ""
     echo "## Calificación: xcalificacionx"
+    echo ""
     echo "---"
     echo ""
     echo "## Resumen"
@@ -98,5 +100,6 @@ for hw in "$hwdir"tarea*.pdf
 do
     commentaries=$(make_commentaries_file $hw)
     create_template $hw $list $n >> $commentaries
+    make_title $hw $list
 done
 
