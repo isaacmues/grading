@@ -1,33 +1,33 @@
 \documentclass{article}
 
 \usepackage[a4paper, top=2cm]{geometry}
+\usepackage{ifthen}
+
+
+\newcommand{\studentName}[1]{
+    \ifthenelse{\equal{estudiante_prueba}{#1}}{Estudiante Prueba}{}
+}
+
+\newcommand{\point}[1]{
+    \item\textbf{(#1 pts)}
+}
+
 
 \begin{document}
 
-\title{Tarea **n** de **nombre** \\
-       \Large{Calificación: \textbf{**calificacion**}}}
-\author{\textsc{Termodinámica}}
+\title{Tarea de \studentName{estudiante_prueba}}
 \date{}
 \maketitle
 
-\begin{center}
-    \begin{tabular}{cc}
-    \hline
-    %problems
-    \hline
-    \textbf{Total} & **total** \\
-    \hline
-    \end{tabular}
-\end{center}
-
-\section*{Notas}
+\section*{Comentarios}
 
 \begin{center}
     \rule{0.8\textwidth}{1pt}
 \end{center}
 
 \begin{enumerate}
-    \item
+        \point{0.25}
+        \point{1.0}
 \end{enumerate}
 
 \end{document}
