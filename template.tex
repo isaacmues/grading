@@ -1,22 +1,37 @@
-\documentclass{article}
+\documentclass[12pt]{article}
 
 \usepackage[a4paper, top=2cm]{geometry}
 \usepackage{ifthen}
+\usepackage{xcolor}
+\usepackage{pifont}
 
 
 \newcommand{\studentName}[1]{
     \ifthenelse{\equal{estudiante_prueba}{#1}}{Estudiante Prueba}{}
 }
 
+\newcommand{\correct}[1]{
+    \item\textbf{[ \ding{52} ] (#1 pts)}
+}
+
+\newcommand{\incorrect}[1]{
+    \item\textbf{[ \ding{56} ] (#1 pts)}
+}
+
 \newcommand{\point}[1]{
-    \item\textbf{(#1 pts)}
+    \ifthenelse{\equal{1.0}{#1}}{\correct{#1}}{\incorrect{#1}}
 }
 
 
 \begin{document}
 
-\title{Tarea de \studentName{estudiante_prueba}}
+\title{
+    Tarea de \studentName{estudiante_prueba} \\
+    \Large{\textsc{className}}
+}
+\author{}
 \date{}
+
 \maketitle
 
 \section*{Comentarios}
