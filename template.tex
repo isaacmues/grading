@@ -7,9 +7,7 @@
 
 \pagenumbering{gobble}
 
-\newcommand{\studentName}[1]{
-    \ifthenelse{\equal{estudiante_prueba}{#1}}{Estudiante Prueba}{}
-}
+\include{list_template.tex}
 
 \newcommand{\correct}[1]{
     \item\textbf{[ \ding{52} ] (#1 pts)}
@@ -24,14 +22,14 @@
 }
 
 \newcommand{\grade}[2]{
-    \textbf{Calificación: \fpeval{round(#1 / #2 * 100, 1)}}
+    \textbf{Calificación: \fpeval{round(#1 / #2 * 100, 1)} de 100}
 }
 
 \begin{document}
 
 \title{
     \Large{\textsc{className}} \\
-    \huge{Tarea de \studentName{estudiante_prueba}} \\ 
+    \huge{\studentName{abigail_thorn}} \\ 
     \Large{\grade{1.25}{4}}
 }
 \author{}
