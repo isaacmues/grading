@@ -1,5 +1,6 @@
-from pylatex import Document, Section, Command, TextColor
-from pylatex.utils import NoEscape, bold
+from pylatex import Document, Section, Command, TextColor, Enumerate
+from pylatex.utils import NoEscape, bold, escape_latex
+from pylatex.base_classes import Options
 import yaml
 
 
@@ -14,6 +15,8 @@ class Calificacion(Document):
         self.comentarios = [datos["puntuacion"][k]["comentario"] for k in datos["puntuacion"]]
         self.puntos = [datos["puntuacion"][k]["puntos"] for k in datos["puntuacion"]]
         self.calificacion = self.calcula_calificacion()
+
+        self.preamble.append(Command('usepackage', 'pifont'))
 
         self.preamble.append(Command('title', self.crea_titulo()))
         self.preamble.append(Command('author', ''))
@@ -34,6 +37,21 @@ class Calificacion(Document):
 
         return NoEscape(r' \\ '.join((materia, trabajo, calificacion)))
 
+    def crea_puntaje(self, pts):
+        puntaje = ''.join((r'(', str(pts), r' pts)'))
+        paloma = r'[ \ding{52} ]'
+        tache = r'[ \ding{56} ]'
+        if pts != 1.0:
+            return bold(' '.join((paloma, puntaje)), escape=False)
+        else:
+            return bold(' '.join((tache, puntaje)), escape=False)
+
+
+    def pone_comentarios(self):
+        with doc.create(Enumerate(enumeration_symbol=r'\arabic*.')) as enum:
+            for c in self.puntos:
+                enum.add_item(self.crea_puntaje(c))
+
 
 if __name__ == '__main__':
 
@@ -43,6 +61,7 @@ if __name__ == '__main__':
 
     doc = Calificacion(datos)
     doc.fill_document()
+    doc.pone_comentarios()
 
     print(doc.trabajo)
 
