@@ -4,3 +4,5 @@
 *.csv
 *.yml
 *.yaml
+*.fls
+*.fdb_latexmk
