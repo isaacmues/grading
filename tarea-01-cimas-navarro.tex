@@ -1,94 +1,12 @@
 \documentclass[12pt]{article}
 
-\usepackage[a4paper, top=2cm]{geometry}
-\usepackage{pifont}
-\usepackage{xfp}
-\usepackage[dvipsnames]{xcolor}
-\usepackage{titlesec}
-\usepackage[most]{tcolorbox}
-\usepackage{csvsimple}
-\usepackage{luacode}
-
-\pagenumbering{gobble}
-
-\newtcolorbox{inspirational}{enhanced, interior hidden, frame code={
-  \draw[rounded corners, thick] (interior.north west)++ (0,-0.5) -- ++(0,0.5) -- ++(0.5,0) ;
-  \draw[rounded corners, thick] (interior.south east)++ (0,0.5) -- ++(0,-0.5) -- ++(-0.5,0) ;
-}}
-
 \begin{filecontents*}[overwrite]{students-list.csv}
 Alberto Romero Tomás,romero-tomas
 Andreu Buenafuente Moreno,buenafuente-moreno
 Raúl Cimas Navarro,cimas-navarro
 \end{filecontents*}
 
-\begin{luacode*}
-
-    function points(p)
-
-        local omark = [[{\color{OliveGreen}\ding{52}}]]
-        local xmark = [[{\color{Bittersweet}\ding{56}}]]
-        local pts = "("..p.." pts)"
-
-        -- I'd prefer these to be outside the function
-        n = n + 1
-        t = t + p
-
-        if p >= 1.0 then
-            tex.print("[ "..omark.." ] "..pts.." " )
-        else
-            tex.print("[ "..xmark.." ] "..pts.." " )
-        end
-    end
-
-    function getgrade()
-        local g = math.floor(t / n * 100)
-        tex.print(g)
-    end
-
-    function getname(s)
-        tex.print(string.match(tostring(s), "[^tarexmn%p%d][%a%p]*"))
-    end
-
-    function getnumber(s)
-        tex.print(tonumber(string.match(s, "%d%d")))
-    end
-
-    function gettype(s)
-        if string.match(s, "tarea") == "tarea" then
-            tex.print("Tarea")
-        else
-            tex.print("Examen")
-        end
-    end
-
-    function maketitle(s)
-        local number = getnumber(s)
-    end
-
-    n = 0
-    t = 0.0
-
-\end{luacode*}
-
-
-\newcommand{\point}[1]{\item\textbf{\directlua{points(#1)}}}
-
-\newcommand{\gettitle}{
-    \directlua{
-        gettype(\luastring\jobname)
-        getnumber(\luastring\jobname)
-    }
-    de Heurística 
-}
-
-\newcommand{\getauthor}{
-    \csvreader[no head, filter equal={\csvcolii}{\directlua{getname(\luastring\jobname)}}]{./students-list.csv}{}{\csvcoli}
-}
-
-\newcommand{\getgrade}{\directlua{getgrade()} de 100}
-
-\newcommand{\prettyauthor}[1]{\flushright{\textit{--- #1}}}
+\input{preamble.tex}
 
 \begin{document}
 
