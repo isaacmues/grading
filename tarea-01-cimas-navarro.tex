@@ -11,15 +11,6 @@
 
 \pagenumbering{gobble}
 
-\newcommand{\sectionfont}{\Large\bfseries}
-
-\titleformat{\section}
-    {\titlerule
-     \vspace{0.5ex}%
-     \sectionfont}
-    {\thesection}{1em}
-    {\sectionfont}[\titlerule]
-
 \newtcolorbox{inspirational}{enhanced, interior hidden, frame code={
   \draw[rounded corners, thick] (interior.north west)++ (0,-0.5) -- ++(0,0.5) -- ++(0.5,0) ;
   \draw[rounded corners, thick] (interior.south east)++ (0,0.5) -- ++(0,-0.5) -- ++(-0.5,0) ;
@@ -32,8 +23,6 @@ Raúl Cimas Navarro,cimas-navarro
 \end{filecontents*}
 
 \begin{luacode*}
-    n = 0
-    t = 0.0
 
     function points(p)
 
@@ -73,30 +62,39 @@ Raúl Cimas Navarro,cimas-navarro
         end
     end
 
+    function maketitle(s)
+        local number = getnumber(s)
+    end
+
+    n = 0
+    t = 0.0
+
 \end{luacode*}
 
 
-\newcommand{\point}[1]{
-    \item\textbf{\directlua{points(#1)}}
+\newcommand{\point}[1]{\item\textbf{\directlua{points(#1)}}}
+
+\newcommand{\gettitle}{
+    \directlua{
+        gettype(\luastring\jobname)
+        getnumber(\luastring\jobname)
+    }
+    de Heurística 
 }
 
-\newcommand{\getname}[1]{
-    \csvreader[no head, filter equal={\csvcolii}{\directlua{getname(#1)}}]{./students-list.csv}{}{\csvcoli}
+\newcommand{\getauthor}{
+    \csvreader[no head, filter equal={\csvcolii}{\directlua{getname(\luastring\jobname)}}]{./students-list.csv}{}{\csvcoli}
 }
 
-\newcommand{\getnumber}[1]{
-    \directlua{getnumber(#1)}
-}
+\newcommand{\getgrade}{\directlua{getgrade()} de 100}
+
+\newcommand{\prettyauthor}[1]{\flushright{\textit{--- #1}}}
 
 \begin{document}
 
-\title{
-    \Large{\textsc{Heurística II}} \\
-%    \Large{\grade{4.75}{5}}
-}
-\author{}
+\title{\Large{\textsc{\gettitle}}}
+\author{\huge\getauthor}
 \date{}
-
 \maketitle
 
 \section*{Comentarios}
@@ -112,22 +110,13 @@ Raúl Cimas Navarro,cimas-navarro
         \point{1.0} % Revisado
 \end{enumerate}
 
-\section*{Testing}
-
-Tarea\getnumber{"tarea-01-cimas-navarro"}de
-\getname{"tarea-01-cimas-navarro"}
-
-This file is named: \jobname
-
-\directlua{
-    getgrade()
-    gettype("tarea-01-cimas-navarro")
-}
+\section*{Calificación\hfill\Huge\textbf{\getgrade}}
 
 \vspace*{\fill}
 
-%\begin{inspirational}
-%\input{../phrase.tex}
-%\end{inspirational}
+\begin{inspirational}
+Hay frases que inspiran más que otras.
+\prettyauthor{Ayudante Errante}
+\end{inspirational}
 
 \end{document}
