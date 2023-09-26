@@ -39,7 +39,8 @@
     end
 
     function getname(s)
-        tex.print(string.match(tostring(s), "[^tarexmn%p%d][%a%p]*"))
+        local lastnames = string.match(tostring(s), "[^tarexmn%p%d][%a%p]*")
+        tex.print(string.gsub(lastnames, "-calificacion.tex", ""))
     end
 
     function getnumber(s)
