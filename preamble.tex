@@ -6,6 +6,7 @@
 \usepackage[most]{tcolorbox}
 \usepackage{csvsimple}
 \usepackage{luacode}
+\usepackage{pdfpages}
 
 \pagenumbering{gobble}
 
@@ -40,7 +41,8 @@
 
     function getname(s)
         local lastnames = string.match(tostring(s), "[^tarexmn%p%d][%a%p]*")
-        tex.print(string.gsub(lastnames, "-calificacion.tex", ""))
+        lastnames = string.gsub(lastnames, "-calificacion", "")
+        tex.print(lastnames)
     end
 
     function getnumber(s)
@@ -76,7 +78,7 @@
 }
 
 \newcommand{\getauthor}{
-    \csvreader[no head, filter equal={\csvcolii}{\directlua{getname(\luastring\jobname)}}]{./students-list.csv}{}{\csvcoli}
+    \csvreader[no head, filter equal={\csvcoli}{\directlua{getname(\luastring\jobname)}}]{./students-list.csv}{}{\csvcolii}
 }
 
 \newcommand{\getgrade}{\directlua{getgrade()} de 100}
