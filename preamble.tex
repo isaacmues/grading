@@ -61,6 +61,11 @@
         local number = getnumber(s)
     end
 
+    function gethwfile(s)
+        local hwfile = string.gsub(s, "-calificacion", ".pdf")
+        tex.print(hwfile)
+    end
+
     n = 0
     t = 0.0
 
@@ -82,5 +87,7 @@
 }
 
 \newcommand{\getgrade}{\directlua{getgrade()} de 100}
+
+\newcommand{\appendhw}{\includepdf[pages=-]{\directlua{gethwfile(\luastring\jobname)}}}
 
 \newcommand{\prettyauthor}[1]{\flushright{\textit{--- #1}}}
