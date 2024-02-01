@@ -1,7 +1,6 @@
 *.pdf
 *.aux
 *.log
-*.csv
 *.yml
 *.yaml
 *.fls
