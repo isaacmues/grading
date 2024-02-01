@@ -1,0 +1,80 @@
+\usepackage[a4paper, top=2cm]{geometry}
+\usepackage[spanish,mexico]{babel}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{xfp}
+\usepackage{pifont}
+\usepackage{luacode}
+\usepackage{pdfpages}
+\usepackage{amsmath,enumerate}
+
+\pagenumbering{gobble}
+
+\newcommand{\omark}{{\color{OliveGreen}\ding{52}}}
+\newcommand{\xmark}{{\color{Bittersweet}\ding{56}}}
+\newcommand{\point}[2][1.0]{\item\textbf{\directlua{addPoint(#2, #1)}}}
+\newcommand{\grade}{\directlua{getGrade(points, weights)}}
+\newcommand{\work}{\directlua{getWork('t02-cimas-navarro-calificacion')}}
+
+\begin{luacode*}
+
+    points = {}
+    weights = {}
+    total = 0
+
+    function addPoint(p, w)
+        table.insert(points, p)
+        table.insert(weights, w)
+        total = total + 1
+        printPoint(p, w)
+    end
+
+    function printPoint(p, w)
+        local prompt = "("..math.floor(p * 100).."\\% )"
+
+        if p >= 1.0 then
+            prompt = "[ \\omark ] "..prompt
+        else
+            prompt = "[ \\xmark ] "..prompt
+        end
+
+        if not(w == 1.0) then
+            prompt = prompt.." \\{\\times"..w.."\\}"
+        end
+
+        tex.print(prompt)
+    end
+
+    function getGrade(ps, ws)
+        local g = 0.0
+
+        for i,pi in ipairs(ps) do
+            g = g + (ps[i] * ws[i])
+        end
+
+        tex.print(math.floor(g / total * 100))
+    end
+
+    function getWork(filename)
+        local n = tonumber(string.match(filename, "%d%d"))
+        if string.match(filename, "%a") == "t" then
+            tex.print("Tarea "..n)
+        else
+            tex.print("Examen "..n)
+        end
+    end
+
+    function getHWfile(filename)
+        local hw = string.gsub(filename, "-calificacion", ".pdf")
+        tex.print(hw)
+    end
+        
+    function getStudent(filename)
+       local name = string.gsub(filename, "-calificacion", "") 
+       name = string.gsub(name, "%a%d+-", "")
+       tex.print(name)
+    end
+
+\end{luacode*}
+
+\title{\large{\textsc{Clase Genérica}} \\ \LARGE{\work}}
+\author{Berto Romero}

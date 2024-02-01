@@ -1,0 +1,20 @@
+\documentclass{article}
+
+\include{preamble.tex}
+
+
+\begin{document}
+\maketitle
+
+\section*{Comentarios}
+\begin{enumerate}
+    \point{0.5} Este es un comentario.
+    \point[2.0]{0.5} Este también.
+    \point{1.0} Y este otro.
+\end{enumerate}
+
+\section*{Calificación: \grade}
+
+\directlua{getStudent('t02-cimas-navarro-calificacion')}
+
+\end{document}
