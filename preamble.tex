@@ -11,9 +11,10 @@
 
 \newcommand{\omark}{{\color{OliveGreen}\ding{52}}}
 \newcommand{\xmark}{{\color{Bittersweet}\ding{56}}}
-\newcommand{\point}[2][1.0]{\item\textbf{\directlua{addPoint(#2, #1)}}}
-\newcommand{\grade}{\directlua{getGrade(points, weights)}}
-\newcommand{\work}{\directlua{getWork('t02-cimas-navarro-calificacion')}}
+\newcommand{\point}[2][1.0]{\item\textbf{\directlua{addPoint(#2, #1)}} }
+\newcommand{\grade}{\directlua{getGrade(points, weights)} }
+\newcommand{\work}{\directlua{getWork('t02-cimas-navarro-calificacion')} }
+\newcommand{\fullname}{\directlua{getFullname('t02-cimas-navarro-calificacion')} }
 
 \begin{luacode*}
 
@@ -29,12 +30,12 @@
     end
 
     function printPoint(p, w)
-        local prompt = "("..math.floor(p * 100).."\\% )"
+        local prompt = "("..math.floor(p * 100).."\\%)"
 
         if p >= 1.0 then
-            prompt = "[ \\omark ] "..prompt
+            prompt = "[ \\omark \\ ] "..prompt
         else
-            prompt = "[ \\xmark ] "..prompt
+            prompt = "[ \\xmark \\ ] "..prompt
         end
 
         if not(w == 1.0) then
@@ -67,14 +68,39 @@
         local hw = string.gsub(filename, "-calificacion", ".pdf")
         tex.print(hw)
     end
+
+    function loadList(csv)
+        local lines = {}
+        local file = io.open(csv, "r")
+        for line in file:lines() do
+            table.insert(lines, line)
+        end
+        return lines
+    end
         
-    function getStudent(filename)
-       local name = string.gsub(filename, "-calificacion", "") 
-       name = string.gsub(name, "%a%d+-", "")
-       tex.print(name)
+    function getLasnames(filename)
+       local lastnames = string.gsub(filename, "-calificacion", "") 
+       lastnames = string.gsub(lastnames, "%a%d+%-", "")
+       lastnames = string.gsub(lastnames, "%p", "%%%1")
+       return lastnames
+    end
+
+    function getFullname(filename)
+       local lastnames = getLasnames(filename)
+       lastnames = lastnames..","
+       local list = loadList("students.csv") 
+       local fullname = nil
+
+       for i,l in ipairs(list) do
+            if not(string.match(l, lastnames) == nil) then
+                fullname = string.gsub(l, lastnames, "")
+                break
+            end
+        end
+       tex.print(fullname)
     end
 
 \end{luacode*}
 
-\title{\large{\textsc{Clase Genérica}} \\ \LARGE{\work}}
-\author{Berto Romero}
+\title{\Large{\textsc{Clase Genérica}} \\ \LARGE{\work}}
+\author{\fullname}
