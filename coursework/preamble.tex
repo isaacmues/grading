@@ -15,7 +15,7 @@
 \newcommand{\grade}{\directlua{getGrade(points, weights)} }
 \newcommand{\work}{\directlua{getWork(\luastring\jobname)} }
 \newcommand{\fullname}{\directlua{getFullname(\luastring\jobname)} }
-\newcommand{\appendhw}{\directlua{getHWfile(\luastring\jobname)}}
+\newcommand{\appendhw}{\includepdf[pages=-]{\directlua{getHWfile(\luastring\jobname)}}}
 
 \begin{luacode*}
 
