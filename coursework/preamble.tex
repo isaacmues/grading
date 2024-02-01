@@ -13,8 +13,8 @@
 \newcommand{\xmark}{{\color{Bittersweet}\ding{56}}}
 \newcommand{\point}[2][1.0]{\item\textbf{\directlua{addPoint(#2, #1)}} }
 \newcommand{\grade}{\directlua{getGrade(points, weights)} }
-\newcommand{\work}{\directlua{getWork('t02-cimas-navarro-calificacion')} }
-\newcommand{\fullname}{\directlua{getFullname('t02-cimas-navarro-calificacion')} }
+\newcommand{\work}{\directlua{getWork(\luastring\jobname)} }
+\newcommand{\fullname}{\directlua{getFullname(\luastring\jobname)} }
 
 \begin{luacode*}
 
@@ -88,7 +88,7 @@
     function getFullname(filename)
        local lastnames = getLasnames(filename)
        lastnames = lastnames..","
-       local list = loadList("students.csv") 
+       local list = loadList("../students.csv") 
        local fullname = nil
 
        for i,l in ipairs(list) do
